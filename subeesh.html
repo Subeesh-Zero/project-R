@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Portal</title>
+
+  <!-- Fonts & Bootstrap CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- SweetAlert2 CSS -->
+
+  
+  <style>
+    body {
+      font-family: 'PT Sans', sans-serif;
+      background: #f8f9fa; /* Light gray background */
+      margin: 0;
+      padding: 0;
+    }
+    .main-container {
+      /* Make container fluid but restrict to 95% of screen width */
+      width: 95%;
+      margin: 40px auto; /* Center horizontally with top spacing */
+    }
+    .heading-title {
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+  </style>
+
+  
+<!-- Loader pag ST Css -->  
+  <script>
+    window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+  
+    loader.classList.add("loader--hidden");
+  
+    loader.addEventListener("transitionend", () => {
+      document.body.removeChild(loader);
+    });
+  });
+  </script>
+
+<style>
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333333;
+  transition: opacity 0.7s, visibility 0.75s;
+  z-index: 11;
+}
+
+.loader--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader::after {
+  content: "";
+  width: 75px;
+  height: 75px;
+  border: 15px solid #dddddd;
+  border-top-color: #009578;
+  border-radius: 50%;
+  animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+  </style>
+<!-- Loader pag End Css -->   
+
+</head>
+<body>
+  <div class="loader"></div>
+  <!-- Navigation (Optional) -->
+  <nav class="navbar navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">College Result Portal</span>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <div>
+    <div class="row justify-content-center">
+      <!-- Adjust column widths for better responsiveness on larger screens -->
+      <div>
+        <h2 class="heading-title text-center">Check Your Result</h2>
+
+        <!-- Card for Form -->
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+          <div class="card-body">
+            <!-- Roll Number -->
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label fw-bold">Roll Number</label>
+              <input
+                type="number"
+                class="form-control"
+                id="phoneNumber"
+                placeholder="Enter your roll number"
+              />
+            </div>
+
+            <!-- Class -->
+            <div class="mb-3">
+              <label for="sheetSelector" class="form-label fw-bold">Class</label>
+              <select id="sheetSelector" class="form-select">
+                <option value="" disabled selected>Select Department</option>
+                <option value="B.TECH.IT">BTECHIT</option>
+                <option value="C.S.E">CSE</option>
+                <option value="E.C.E">ECE</option>
+                <option value="M.E.C.H">MECH</option>
+                <option value="E.E.E">EEE</option>
+                <option value="C.I.V.I.L">CIVIL</option>
+              </select>
+            </div>
+
+            <!-- Password (previously DOB) -->
+    
+           <div class="mb-4">
+                <label for="password" class="form-label fw-bold">Date of Birth</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="password"
+                  placeholder="Enter Date"
+                  onfocus="(this.type='date')"
+                  onblur="formatDateInput(this)"
+                />
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-success" onclick="getDetail()">Get Result</button>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="content" id="contentToSave">
+
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body" id="result" style="min-height: 100%;"></div>
+          </div>
+
+        </div>
+        <!-- save image START -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script>
+          function saveAsJpg() {
+            const content = document.getElementById('contentToSave');
+            
+            // Capture the div content using html2canvas
+            html2canvas(content, { useCORS: true }).then(function(canvas) {
+              // Convert the canvas to a data URL in JPG format
+              const imageUrl = canvas.toDataURL("image/jpeg", 1.0); // 1.0 for high quality
+      
+              // Create an invisible link to trigger the download
+              const link = document.createElement('a');
+              link.href = imageUrl;
+              link.download = 'content-image.jpg'; // Default image filename
+              link.click(); // Trigger the download
+            });
+          }
+        </script>
+      <!-- save image START -->  
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle & SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    // Replace with your published Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAQvURlt1ZzwfGt3MEGRfmxNutj_ePIIw-OXLlP3ZL_i3x2arWXsPXzKinR61cXeMlqw/exec";
+
+    function getDetail() {
+      const phoneNumber       = document.getElementById("phoneNumber").value.trim();
+      const selectedSheetName = document.getElementById("sheetSelector").value;
+      const password          = document.getElementById("password").value.trim(); // Password instead of DOB
+
+      if (!phoneNumber || !selectedSheetName || !password) {
+        Swal.fire("Error", "Please fill all required fields.", "error");
+        return;
+      }
+
+      // Show a loading modal (SweetAlert)
+      Swal.fire({
+        title: 'Please wait...',
+        text: 'We are getting your result',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Construct the query string
+      const url = `${WEB_APP_URL}?action=submitDT&phoneNumber=${encodeURIComponent(phoneNumber)}&selectedSheetName=${encodeURIComponent(selectedSheetName)}&password=${encodeURIComponent(password)}`;
+
+      // Fetch the raw HTML from Apps Script
+      fetch(url)
+        .then(response => response.text())
+        .then(htmlString => {
+          Swal.close();
+          document.getElementById("result").innerHTML = htmlString;
+        })
+        .catch(err => {
+          Swal.close();
+          Swal.fire("Error", "Something went wrong: " + err.message, "error");
+        });
+    }
+
+  </script>
+
+   <!-- watermark (start) -->
+  <style>
+  .content {
+    padding: 20px;
+  }
+  .watermark {
+    position: fixed;
+    bottom: 10px; /* Adjust the bottom position */
+    margin-right: 2px;
+    right: 10px;
+    font-size: 50px; /* Reduced size of the watermark text */
+    color: rgba(0, 0, 0, 0.1); /* Light gray color with transparency */
+    pointer-events: none; /* Ensures the watermark doesn't block any clickable elements */
+    font-weight: bold;
+    z-index: 9999; /* Ensures the watermark stays on top */
+    user-select: none; /* Prevents text selection */
+  }
+  </style>
+  <div class="watermark">Developed by Subeesh</div>
+   <!-- watermark (end) -->
+</body>
+
+ <!-- Date Script (st) -->
+<script>
+    // date script
+    function formatDateInput(input) {
+      const dateValue = input.value; // Get the selected date in YYYY-MM-DD format
+      if (!dateValue) {
+        input.type = 'text'; // Revert to text type if no value selected
+        return;
+      }
+    
+      // Convert YYYY-MM-DD to MM.DD.YYYY format
+      const [year, month, day] = dateValue.split("-");
+      const formattedDate = `${month}.${day}.${year}`;
+    
+      // Replace the input value with the formatted date and reset type
+      input.type = 'text';
+      input.value = formattedDate;
+    }
+    
+    </script>
+  <!-- Date Script (end) -->  
+  
+</html>
