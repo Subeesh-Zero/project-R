@@ -247,11 +247,10 @@
   <!-- Bootstrap Bundle & SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Scripts -->
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzdx-XfK-ZYXlxe8Zl60anFX7rXlfxn91M7t_qrA5z6J9oDzf6hN4DV3m2q-_IN3FiN/exec"; // Replace with your Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz5-EFecdX20FKu7i7Gnqh0pQydynLFQAyFcO6YlstPwRUI74y5oDAmRIusvqiN9Pyq/exec"; // Replace with your Web App URL
 
     // Loader Logic
     window.addEventListener("load", () => {
@@ -297,26 +296,6 @@
           Swal.close();
           Swal.fire("Error", "Something went wrong: " + err.message, "error");
         });
-    }
-
-    function saveAsJpg() {
-      const content = document.getElementById('contentToSave');
-      html2canvas(content, {
-        useCORS: true, // Enable CORS for external resources
-        scale: 2, // Increase scale for better quality
-        logging: true, // Enable logging for debugging
-        allowTaint: true, // Allow tainted canvas
-        backgroundColor: '#ffffff', // Set background color to white
-      }).then(canvas => {
-        const imageUrl = canvas.toDataURL("image/jpeg", 1.0);
-        const link = document.createElement('a');
-        link.href = imageUrl;
-        link.download = 'result.jpg';
-        link.click();
-      }).catch(err => {
-        console.error("Error generating image:", err);
-        Swal.fire("Error", "Failed to generate image. Please try again.", "error");
-      });
     }
 
     function formatDateInput(input) {
