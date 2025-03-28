@@ -16,13 +16,6 @@
 
   <!-- Custom Styles -->
   <style>
-    /* Disable responsiveness */
-    body {
-      min-width: 1200px; /* Force desktop view */
-      overflow-x: auto; /* Allow horizontal scrolling */
-      padding-bottom: 60px; /* Space for fixed copyright */
-    }
-
     /* Loader Styles */
     .loader {
       position: fixed;
@@ -33,7 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #333333;
+      background: rgba(0, 0, 0, 0.8);
       transition: opacity 0.75s ease, visibility 0.75s ease;
       z-index: 9999;
     }
@@ -67,8 +60,8 @@
       position: fixed;
       bottom: 10px;
       right: 10px;
-      font-size: 50px;
-      color: rgba(0, 0, 0, 0.2);
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.4);
       pointer-events: none;
       z-index: 9999;
       user-select: none;
@@ -76,27 +69,32 @@
 
     /* Professional Styling */
     .form-card {
-      border: 1px solid #ddd;
+      border: none;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       background-color: #ffffff;
+      padding: 2rem;
+      margin-bottom: 2rem;
     }
 
     .result-card {
-      border: 1px solid #ddd;
+      border: none;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       background-color: #ffffff;
+      padding: 2rem;
+      margin-bottom: 2rem;
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
+      margin-bottom: 1rem;
     }
 
     .table th, .table td {
       padding: 12px;
-      border: 1px solid #ddd;
+      border: 1px solid #dee2e6;
       text-align: center;
     }
 
@@ -143,8 +141,8 @@
       position: fixed;
       bottom: 80px;
       right: 30px;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background-color: #343a40;
       color: white;
       border-radius: 50%;
@@ -163,20 +161,20 @@
     }
 
     .developer-fab i {
-      font-size: 24px;
+      font-size: 20px;
     }
 
     /* Tooltip for FAB */
     .developer-fab::after {
-      content: "Developer";
+      content: "Developer Info";
       position: absolute;
-      right: 70px;
+      right: 60px;
       white-space: nowrap;
       background-color: #343a40;
       color: white;
       padding: 5px 10px;
       border-radius: 4px;
-      font-size: 14px;
+      font-size: 12px;
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
@@ -190,13 +188,58 @@
     .download-btn {
       margin-top: 20px;
       display: none;
+      width: 100%;
     }
 
     /* Responsive adjustments */
-    @media (max-width: 1200px) {
+    @media (max-width: 768px) {
+      .form-card, .result-card {
+        padding: 1.5rem;
+      }
+      
+      .table th, .table td {
+        padding: 8px;
+        font-size: 14px;
+      }
+      
+      .developer-fab {
+        width: 40px;
+        height: 40px;
+        bottom: 70px;
+        right: 20px;
+      }
+      
+      .developer-fab i {
+        font-size: 16px;
+      }
+      
+      .copyright {
+        font-size: 12px;
+        padding: 10px 0;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .navbar, .developer-fab, .copyright, .watermark, .download-btn {
+        display: none !important;
+      }
+      
       body {
-        min-width: 100%;
-        overflow-x: auto;
+        padding: 0;
+        background: none;
+      }
+      
+      .container {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+      }
+      
+      .result-card {
+        box-shadow: none;
+        border: none;
+        padding: 0;
       }
     }
   </style>
@@ -206,70 +249,86 @@
   <div class="loader"></div>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-dark bg-primary shadow-sm">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1"><i class="fas fa-graduation-cap me-2"></i>College Result Portal</span>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-graduation-cap me-2"></i>College Result Portal
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">
+              <i class="fas fa-info-circle me-1"></i>About
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 
   <!-- Main Content Container -->
   <div class="container my-4">
     <div class="row justify-content-center">
-      <div class="col-md-12">
+      <div class="col-lg-8 col-md-10">
         <h2 class="text-center mb-4">Check Your Result</h2>
 
         <!-- Card for Form -->
-        <div class="form-card p-4 mb-4">
+        <div class="form-card">
           <!-- Roll Number -->
           <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Roll Number</label>
+            <label for="rollNumber" class="form-label">Roll Number</label>
             <input
               type="number"
               class="form-control"
-              id="phoneNumber"
+              id="rollNumber"
               placeholder="Enter your roll number"
+              required
             />
           </div>
 
-          <!-- Class -->
+          <!-- Department -->
           <div class="mb-3">
-            <label for="sheetSelector" class="form-label">Class</label>
-            <select id="sheetSelector" class="form-select">
+            <label for="departmentSelect" class="form-label">Department</label>
+            <select id="departmentSelect" class="form-select" required>
               <option value="" disabled selected>Select Department</option>
-              <option value="Database IT">BTECHIT</option>
-              <option value="Database CSE">CSE</option>
-              <option value="Database ECE">ECE</option>
-              <option value="Database MECH">MECH</option>
-              <option value="Database EEE">EEE</option>
-              <option value="Database CIVIL">CIVIL</option>
+              <option value="Database IT">BTECH IT</option>
+              <option value="Database CSE">Computer Science</option>
+              <option value="Database ECE">Electronics</option>
+              <option value="Database MECH">Mechanical</option>
+              <option value="Database EEE">Electrical</option>
+              <option value="Database CIVIL">Civil</option>
             </select>
           </div>
 
-          <!-- Password (previously DOB) -->
+          <!-- Date of Birth -->
           <div class="mb-4">
-            <label for="password" class="form-label">Date of Birth</label>
+            <label for="dobInput" class="form-label">Date of Birth</label>
             <input
               type="text"
               class="form-control"
-              id="password"
-              placeholder="Enter Date"
+              id="dobInput"
+              placeholder="DD/MM/YYYY"
               onfocus="(this.type='date')"
               onblur="formatDateInput(this)"
+              required
             />
           </div>
 
           <!-- Buttons -->
           <div class="d-grid gap-2">
-            <button class="btn btn-success" onclick="getDetail()">
+            <button class="btn btn-primary" onclick="getResult()">
               <i class="fas fa-search me-2"></i>Get Result
             </button>
           </div>
         </div>
 
         <!-- Result Section -->
-        <div class="content mt-4" id="contentToSave">
-          <div class="result-card p-4" id="result"></div>
-          <button id="downloadBtn" class="btn btn-primary download-btn" onclick="saveAsJpg()">
+        <div class="content" id="contentToSave">
+          <div class="result-card" id="resultContainer"></div>
+          <button id="downloadBtn" class="btn btn-success download-btn" onclick="saveAsJpg()">
             <i class="fas fa-download me-2"></i>Download Result
           </button>
         </div>
@@ -278,7 +337,7 @@
   </div>
 
   <!-- Developer FAB Button -->
-  <div class="developer-fab" onclick="window.open('https://example.com/developer', '_blank')">
+  <div class="developer-fab" data-bs-toggle="modal" data-bs-target="#developerModal">
     <i class="fas fa-code"></i>
   </div>
 
@@ -286,18 +345,90 @@
   <div class="copyright">
     <div class="container">
       <div class="row">
-        <div class="col-md-6 text-md-start">
+        <div class="col-md-6 text-md-start mb-2 mb-md-0">
           &copy; 2023 <a href="#" target="_blank">College Result Portal</a>. All Rights Reserved.
         </div>
         <div class="col-md-6 text-md-end">
-          Developed by <a href="#" target="_blank">Subeesh</a> | <a href="#" target="_blank">Privacy Policy</a> | <a href="#" target="_blank">Terms of Service</a>
+          Developed by <a href="#" target="_blank">Subeesh</a> | <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Watermark -->
-  <div class="watermark">Developed by Subeesh</div>
+  <div class="watermark">v1.0.0</div>
+
+  <!-- About Modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">About Result Portal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>This portal allows students to check their academic results online. Please enter your roll number, department, and date of birth to access your result.</p>
+          <p>For any issues, please contact your department office.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer Modal -->
+  <div class="modal fade" id="developerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Developer Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <i class="fas fa-code fa-3x text-primary mb-3"></i>
+            <h4>College Result Portal</h4>
+            <p class="text-muted">Version 1.0.0</p>
+          </div>
+          <p>Developed by Subeesh using modern web technologies:</p>
+          <ul>
+            <li>HTML5, CSS3, JavaScript</li>
+            <li>Bootstrap 5 Framework</li>
+            <li>Google Apps Script Backend</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal fade" id="privacyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Privacy Policy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6>Data Collection</h6>
+          <p>We only collect the information necessary to retrieve your academic results, including your roll number, department, and date of birth.</p>
+          
+          <h6>Data Usage</h6>
+          <p>Your information is used solely for the purpose of fetching and displaying your academic results. We do not store any personal data on our servers.</p>
+          
+          <h6>Data Security</h6>
+          <p>All data transmissions are encrypted using HTTPS protocol to ensure your information remains secure.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Bootstrap Bundle & SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -306,7 +437,7 @@
 
   <!-- Scripts -->
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRIQ6Ffic7ZuuSZOCnaeP5e596JklJNGYnO9P9p4-_FBS4Q6CYLzY_qGcWV33riZTN/exec"; // Replace with your Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRIQ6Ffic7ZuuSZOCnaeP5e596JklJNGYnO9P9p4-_FBS4Q6CYLzY_qGcWV33riZTN/exec";
 
     // Loader Logic
     window.addEventListener("load", () => {
@@ -320,58 +451,36 @@
       }, { once: true });
     });
 
-    function getDetail() {
-      const phoneNumber = document.getElementById("phoneNumber").value.trim();
-      const selectedSheetName = document.getElementById("sheetSelector").value;
-      const password = document.getElementById("password").value.trim();
+    function getResult() {
+      const rollNumber = document.getElementById("rollNumber").value.trim();
+      const department = document.getElementById("departmentSelect").value;
+      const dob = document.getElementById("dobInput").value.trim();
 
-      if (!phoneNumber || !selectedSheetName || !password) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Please fill all required fields.',
-          confirmButtonColor: '#3085d6'
-        });
+      if (!rollNumber || !department || !dob) {
+        showError("Please fill all required fields.");
         return;
       }
 
-      // Show loading modal
-      Swal.fire({
-        title: 'Processing Request',
-        html: 'Please wait while we fetch your result...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
+      showLoading("Fetching your result...");
 
-      // Fetch result
-      const url = `${WEB_APP_URL}?action=submitDT&phoneNumber=${encodeURIComponent(phoneNumber)}&selectedSheetName=${encodeURIComponent(selectedSheetName)}&password=${encodeURIComponent(password)}`;
+      const url = `${WEB_APP_URL}?action=submitDT&phoneNumber=${encodeURIComponent(rollNumber)}&selectedSheetName=${encodeURIComponent(department)}&password=${encodeURIComponent(dob)}`;
+      
       fetch(url)
-        .then(response => response.text())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
         .then(htmlString => {
           Swal.close();
-          document.getElementById("result").innerHTML = htmlString;
+          document.getElementById("resultContainer").innerHTML = htmlString;
           document.getElementById("downloadBtn").style.display = 'block';
-          
-          // Show success notification
-          Swal.fire({
-            icon: 'success',
-            title: 'Result Retrieved',
-            text: 'Your result has been successfully loaded.',
-            confirmButtonColor: '#3085d6',
-            timer: 2000,
-            timerProgressBar: true
-          });
+          showSuccess("Result loaded successfully!");
         })
         .catch(err => {
-          Swal.close();
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something went wrong: ' + err.message,
-            confirmButtonColor: '#3085d6'
-          });
+          console.error("Error:", err);
+          showError("Failed to fetch result. Please check your details and try again.");
         });
     }
 
@@ -381,10 +490,19 @@
         input.type = 'text';
         return;
       }
-      const [year, month, day] = dateValue.split("-");
-      const formattedDate = `${month}.${day}.${year}`;
+      
+      // Format date as DD/MM/YYYY regardless of input type
+      const date = new Date(dateValue);
+      if (isNaN(date.getTime())) {
+        return; // Invalid date
+      }
+      
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      
       input.type = 'text';
-      input.value = formattedDate;
+      input.value = `${day}/${month}/${year}`;
     }
 
     function saveAsJpg() {
@@ -394,14 +512,7 @@
       // Hide the download button temporarily
       downloadBtn.style.display = 'none';
       
-      Swal.fire({
-        title: 'Generating Image',
-        html: 'Preparing your result for download...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
+      showLoading("Preparing result for download...");
 
       html2canvas(content, {
         useCORS: true,
@@ -413,32 +524,61 @@
         const imageUrl = canvas.toDataURL("image/jpeg", 1.0);
         const link = document.createElement('a');
         link.href = imageUrl;
-        link.download = 'college_result.jpg';
+        link.download = `result_${document.getElementById("rollNumber").value.trim()}.jpg`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         
         Swal.close();
         downloadBtn.style.display = 'block';
-        
-        // Show success notification
-        Swal.fire({
-          icon: 'success',
-          title: 'Download Complete',
-          text: 'Your result has been downloaded successfully.',
-          confirmButtonColor: '#3085d6',
-          timer: 2000,
-          timerProgressBar: true
-        });
+        showSuccess("Result downloaded successfully!");
       }).catch(err => {
         console.error("Error generating image:", err);
         downloadBtn.style.display = 'block';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to generate image. Please try again.',
-          confirmButtonColor: '#3085d6'
-        });
+        showError("Failed to generate image. Please try again.");
       });
     }
+
+    // Helper functions for notifications
+    function showLoading(message) {
+      Swal.fire({
+        title: 'Processing',
+        html: message,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+    }
+
+    function showSuccess(message) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+        confirmButtonColor: '#3085d6',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+
+    function showError(message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        confirmButtonColor: '#3085d6'
+      });
+    }
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
   </script>
 </body>
 </html>
