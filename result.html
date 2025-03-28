@@ -16,11 +16,26 @@
 
   <!-- Custom Styles -->
   <style>
-    /* Disable responsiveness */
-    body {
-      min-width: 1200px; /* Force desktop view */
-      overflow-x: auto; /* Allow horizontal scrolling */
-      padding-bottom: 60px; /* Space for fixed copyright */
+    /* Responsive design */
+    @media (max-width: 1200px) {
+      body {
+        min-width: 100%;
+        overflow-x: auto;
+      }
+      
+      .watermark {
+        font-size: 30px !important;
+        bottom: 5px !important;
+        right: 5px !important;
+      }
+      
+      .form-card, .result-card {
+        margin: 0 10px;
+      }
+      
+      .container {
+        padding: 0 15px;
+      }
     }
 
     /* Loader Styles */
@@ -68,10 +83,20 @@
       bottom: 10px;
       right: 10px;
       font-size: 50px;
-      color: rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.1);
       pointer-events: none;
       z-index: 9999;
       user-select: none;
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      opacity: 0.7;
+      transform: rotate(-15deg);
+      transition: all 0.3s ease;
+    }
+
+    .watermark:hover {
+      opacity: 0.9;
     }
 
     /* Professional Styling */
@@ -79,17 +104,20 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
     }
 
     .result-card {
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px;
     }
 
     .table th, .table td {
@@ -122,6 +150,7 @@
       text-align: center;
       border-top: 1px solid #ddd;
       z-index: 1000;
+      font-size: 14px;
     }
 
     /* Developer FAB */
@@ -141,6 +170,19 @@
       z-index: 1000;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       transition: all 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      .developer-fab {
+        width: 50px;
+        height: 50px;
+        bottom: 70px;
+        right: 20px;
+      }
+      
+      .developer-fab i {
+        font-size: 20px !important;
+      }
     }
 
     .developer-fab:hover {
@@ -175,8 +217,22 @@
     /* Download Button */
     .download-btn-container {
       text-align: center;
-      margin-top: 20px;
+      margin: 20px 0;
       display: none;
+    }
+    
+    .download-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    @media (max-width: 768px) {
+      .download-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -254,7 +310,7 @@
 
         <!-- Download Button (initially hidden) -->
         <div class="download-btn-container" id="downloadBtnContainer">
-          <button class="btn btn-primary" onclick="saveAsJpg()">
+          <button class="btn btn-primary download-btn" onclick="saveAsJpg()">
             <i class="fas fa-download me-2"></i>Download Result as JPG
           </button>
         </div>
@@ -284,7 +340,7 @@
 
   <!-- Scripts -->
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRIQ6Ffic7ZuuSZOCnaeP5e596JklJNGYnO9P9p4-_FBS4Q6CYLzY_qGcWV33riZTN/exec"; // Replace with your Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRIQ6Ffic7ZuuSZOCnaeP5e596JklJNGYnO9P9p4-_FBS4Q6CYLzY_qGcWV33riZTN/exec";
 
     // Loader Logic
     window.addEventListener("load", () => {
@@ -360,11 +416,11 @@
       });
 
       html2canvas(content, {
-        useCORS: true, // Enable CORS for external resources
-        scale: 2, // Increase scale for better quality
-        logging: true, // Enable logging for debugging
-        allowTaint: true, // Allow tainted canvas
-        backgroundColor: '#ffffff', // Set background color to white
+        useCORS: true,
+        scale: 2,
+        logging: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
       }).then(canvas => {
         // Close the generating message
         Swal.close();
