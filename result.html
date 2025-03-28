@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>College Result Portal</title>
 
   <!-- Bootstrap CSS -->
@@ -11,12 +11,16 @@
   <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- Custom Styles -->
   <style>
     /* Disable responsiveness */
     body {
       min-width: 1200px; /* Force desktop view */
       overflow-x: auto; /* Allow horizontal scrolling */
+      padding-bottom: 60px; /* Space for fixed copyright */
     }
 
     /* Loader Styles */
@@ -106,6 +110,67 @@
     .table tr:hover {
       background-color: #f1f1f1;
     }
+
+    /* Fixed Copyright */
+    .copyright {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f8f9fa;
+      padding: 10px 0;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      z-index: 1000;
+    }
+
+    /* Developer FAB */
+    .developer-fab {
+      position: fixed;
+      bottom: 80px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #343a40;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+    }
+
+    .developer-fab:hover {
+      background-color: #23272b;
+      transform: scale(1.1);
+    }
+
+    .developer-fab i {
+      font-size: 24px;
+    }
+
+    /* Tooltip for FAB */
+    .developer-fab::after {
+      content: "Developer";
+      position: absolute;
+      right: 70px;
+      white-space: nowrap;
+      background-color: #343a40;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .developer-fab:hover::after {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -183,6 +248,18 @@
     </div>
   </div>
 
+  <!-- Developer FAB Button -->
+  <div class="developer-fab" onclick="window.open('https://example.com/developer', '_blank')">
+    <i class="fas fa-code"></i>
+  </div>
+
+  <!-- Copyright -->
+  <div class="copyright">
+    <div class="container">
+      <span>© 2023 College Result Portal. All Rights Reserved.</span>
+    </div>
+  </div>
+
   <!-- Watermark -->
   <div class="watermark">Developed by Subeesh</div>
 
@@ -193,7 +270,7 @@
 
   <!-- Scripts -->
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwBfmdR87MlqfJptmAN0vzTgeZ652qAgu2rgNVp3QYuJHIWfFAb8wYirHHYY6LkGhsq/exec"; // Replace with your Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxRIQ6Ffic7ZuuSZOCnaeP5e596JklJNGYnO9P9p4-_FBS4Q6CYLzY_qGcWV33riZTN/exec"; // Replace with your Web App URL
 
     // Loader Logic
     window.addEventListener("load", () => {
@@ -241,26 +318,6 @@
         });
     }
 
-    function saveAsJpg() {
-      const content = document.getElementById('contentToSave');
-      html2canvas(content, {
-        useCORS: true, // Enable CORS for external resources
-        scale: 2, // Increase scale for better quality
-        logging: true, // Enable logging for debugging
-        allowTaint: true, // Allow tainted canvas
-        backgroundColor: '#ffffff', // Set background color to white
-      }).then(canvas => {
-        const imageUrl = canvas.toDataURL("image/jpeg", 1.0);
-        const link = document.createElement('a');
-        link.href = imageUrl;
-        link.download = 'result.jpg';
-        link.click();
-      }).catch(err => {
-        console.error("Error generating image:", err);
-        Swal.fire("Error", "Failed to generate image. Please try again.", "error");
-      });
-    }
-
     function formatDateInput(input) {
       const dateValue = input.value;
       if (!dateValue) {
@@ -273,6 +330,5 @@
       input.value = formattedDate;
     }
   </script>
-  
 </body>
 </html>
