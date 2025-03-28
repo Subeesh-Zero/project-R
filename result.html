@@ -79,12 +79,14 @@
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
     }
 
     .result-card {
       border: 1px solid #ddd;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
     }
 
     .table {
@@ -117,11 +119,23 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #f8f9fa;
-      padding: 10px 0;
+      background-color: #343a40;
+      color: #ffffff;
+      padding: 15px 0;
       text-align: center;
-      border-top: 1px solid #ddd;
+      font-size: 14px;
       z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .copyright a {
+      color: #f8f9fa;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .copyright a:hover {
+      color: #17a2b8;
     }
 
     /* Developer FAB */
@@ -171,6 +185,20 @@
     .developer-fab:hover::after {
       opacity: 1;
     }
+
+    /* Download Button */
+    .download-btn {
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+      body {
+        min-width: 100%;
+        overflow-x: auto;
+      }
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -180,7 +208,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">College Result Portal</span>
+      <span class="navbar-brand mb-0 h1"><i class="fas fa-graduation-cap me-2"></i>College Result Portal</span>
     </div>
   </nav>
 
@@ -191,58 +219,59 @@
         <h2 class="text-center mb-4">Check Your Result</h2>
 
         <!-- Card for Form -->
-        <div class="form-card">
-          <div class="card-body">
-            <!-- Roll Number -->
-            <div class="mb-3">
-              <label for="phoneNumber" class="form-label">Roll Number</label>
-              <input
-                type="number"
-                class="form-control"
-                id="phoneNumber"
-                placeholder="Enter your roll number"
-              />
-            </div>
+        <div class="form-card p-4 mb-4">
+          <!-- Roll Number -->
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Roll Number</label>
+            <input
+              type="number"
+              class="form-control"
+              id="phoneNumber"
+              placeholder="Enter your roll number"
+            />
+          </div>
 
-            <!-- Class -->
-            <div class="mb-3">
-              <label for="sheetSelector" class="form-label">Class</label>
-              <select id="sheetSelector" class="form-select">
-                <option value="" disabled selected>Select Department</option>
-                <option value="Database IT">BTECHIT</option>
-                <option value="Database CSE">CSE</option>
-                <option value="Database ECE">ECE</option>
-                <option value="Database MECH">MECH</option>
-                <option value="Database EEE">EEE</option>
-                <option value="Database CIVIL">CIVIL</option>
-              </select>
-            </div>
+          <!-- Class -->
+          <div class="mb-3">
+            <label for="sheetSelector" class="form-label">Class</label>
+            <select id="sheetSelector" class="form-select">
+              <option value="" disabled selected>Select Department</option>
+              <option value="Database IT">BTECHIT</option>
+              <option value="Database CSE">CSE</option>
+              <option value="Database ECE">ECE</option>
+              <option value="Database MECH">MECH</option>
+              <option value="Database EEE">EEE</option>
+              <option value="Database CIVIL">CIVIL</option>
+            </select>
+          </div>
 
-            <!-- Password (previously DOB) -->
-            <div class="mb-4">
-              <label for="password" class="form-label">Date of Birth</label>
-              <input
-                type="text"
-                class="form-control"
-                id="password"
-                placeholder="Enter Date"
-                onfocus="(this.type='date')"
-                onblur="formatDateInput(this)"
-              />
-            </div>
+          <!-- Password (previously DOB) -->
+          <div class="mb-4">
+            <label for="password" class="form-label">Date of Birth</label>
+            <input
+              type="text"
+              class="form-control"
+              id="password"
+              placeholder="Enter Date"
+              onfocus="(this.type='date')"
+              onblur="formatDateInput(this)"
+            />
+          </div>
 
-            <!-- Buttons -->
-            <div class="d-grid gap-2">
-              <button class="btn btn-success" onclick="getDetail()">Get Result</button>
-            </div>
+          <!-- Buttons -->
+          <div class="d-grid gap-2">
+            <button class="btn btn-success" onclick="getDetail()">
+              <i class="fas fa-search me-2"></i>Get Result
+            </button>
           </div>
         </div>
 
         <!-- Result Section -->
         <div class="content mt-4" id="contentToSave">
-          <div class="result-card">
-            <div class="card-body" id="result"></div>
-          </div>
+          <div class="result-card p-4" id="result"></div>
+          <button id="downloadBtn" class="btn btn-primary download-btn" onclick="saveAsJpg()">
+            <i class="fas fa-download me-2"></i>Download Result
+          </button>
         </div>
       </div>
     </div>
@@ -256,7 +285,14 @@
   <!-- Copyright -->
   <div class="copyright">
     <div class="container">
-      <span>© 2023 College Result Portal. All Rights Reserved.</span>
+      <div class="row">
+        <div class="col-md-6 text-md-start">
+          &copy; 2023 <a href="#" target="_blank">College Result Portal</a>. All Rights Reserved.
+        </div>
+        <div class="col-md-6 text-md-end">
+          Developed by <a href="#" target="_blank">Subeesh</a> | <a href="#" target="_blank">Privacy Policy</a> | <a href="#" target="_blank">Terms of Service</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -290,14 +326,19 @@
       const password = document.getElementById("password").value.trim();
 
       if (!phoneNumber || !selectedSheetName || !password) {
-        Swal.fire("Error", "Please fill all required fields.", "error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Please fill all required fields.',
+          confirmButtonColor: '#3085d6'
+        });
         return;
       }
 
       // Show loading modal
       Swal.fire({
-        title: 'Please wait...',
-        text: 'We are getting your result',
+        title: 'Processing Request',
+        html: 'Please wait while we fetch your result...',
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
@@ -311,10 +352,26 @@
         .then(htmlString => {
           Swal.close();
           document.getElementById("result").innerHTML = htmlString;
+          document.getElementById("downloadBtn").style.display = 'block';
+          
+          // Show success notification
+          Swal.fire({
+            icon: 'success',
+            title: 'Result Retrieved',
+            text: 'Your result has been successfully loaded.',
+            confirmButtonColor: '#3085d6',
+            timer: 2000,
+            timerProgressBar: true
+          });
         })
         .catch(err => {
           Swal.close();
-          Swal.fire("Error", "Something went wrong: " + err.message, "error");
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong: ' + err.message,
+            confirmButtonColor: '#3085d6'
+          });
         });
     }
 
@@ -328,6 +385,59 @@
       const formattedDate = `${month}.${day}.${year}`;
       input.type = 'text';
       input.value = formattedDate;
+    }
+
+    function saveAsJpg() {
+      const content = document.getElementById('contentToSave');
+      const downloadBtn = document.getElementById('downloadBtn');
+      
+      // Hide the download button temporarily
+      downloadBtn.style.display = 'none';
+      
+      Swal.fire({
+        title: 'Generating Image',
+        html: 'Preparing your result for download...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      html2canvas(content, {
+        useCORS: true,
+        scale: 2,
+        logging: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+      }).then(canvas => {
+        const imageUrl = canvas.toDataURL("image/jpeg", 1.0);
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = 'college_result.jpg';
+        link.click();
+        
+        Swal.close();
+        downloadBtn.style.display = 'block';
+        
+        // Show success notification
+        Swal.fire({
+          icon: 'success',
+          title: 'Download Complete',
+          text: 'Your result has been downloaded successfully.',
+          confirmButtonColor: '#3085d6',
+          timer: 2000,
+          timerProgressBar: true
+        });
+      }).catch(err => {
+        console.error("Error generating image:", err);
+        downloadBtn.style.display = 'block';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to generate image. Please try again.',
+          confirmButtonColor: '#3085d6'
+        });
+      });
     }
   </script>
 </body>
