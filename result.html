@@ -193,6 +193,7 @@
   </nav>
 
   <!-- Main Content Container -->
+   <center><img style="margin-top: 15px; border-radius: 50%;" src="https://lh3.googleusercontent.com/d/1zaAD7cioYRT8FedchnmdBHJAzf8TlT-u" alt="logo"></center>
   <div class="container my-4">
     <div class="row justify-content-center">
       <div class="col-md-12">
@@ -216,13 +217,11 @@
             <div class="mb-3">
               <label for="sheetSelector" class="form-label">Class</label>
               <select id="sheetSelector" class="form-select">
-                <option value="" disabled selected>Select Department</option>
-                <option value="Database IT">BTECHIT</option>
-                <option value="Database CSE">CSE</option>
-                <option value="Database ECE">ECE</option>
-                <option value="Database MECH">MECH</option>
-                <option value="Database EEE">EEE</option>
-                <option value="Database CIVIL">CIVIL</option>
+                <option value="" disabled selected>Select Year</option>
+                <option value="I Year">I YEAR</option>
+                <option value="II Year">II YEAR</option>
+                <option value="III Year">III YEAR</option>
+                <option value="IV Year">IV YEAR</option>
               </select>
             </div>
 
@@ -264,7 +263,7 @@
   </div>
 
   <!-- Developer FAB Button -->
-  <div class="developer-fab" onclick="window.open('https://example.com/developer', '_blank')">
+  <div class="developer-fab" onclick="window.open('https://www.instagram.com/subeesh.zero/', '_blank')">
     <i class="fas fa-code"></i>
   </div>
 
@@ -285,7 +284,7 @@
 
   <!-- Scripts -->
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5i-rgkxNogiOJ6meMgla5b1aUzwHDNzUd8gKEdLmy75kydmQmZoMesE5HtMhQWOSU/exec"; // Replace with your Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbytRf83Eu9ynayNyW3h2meFEgAR9jrop4CCcuCDDi3tl2_LZQ1_aB2mI-Y-QWNYv7_9/exec"; // Replace with your Web App URL
 
     // Loader Logic
     window.addEventListener("load", () => {
@@ -342,7 +341,7 @@
         return;
       }
       const [year, month, day] = dateValue.split("-");
-      const formattedDate = `${month}.${day}.${year}`;
+      const formattedDate = `${day}.${month}.${year}`;
       input.type = 'text';
       input.value = formattedDate;
     }
